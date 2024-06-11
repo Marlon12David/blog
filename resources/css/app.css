@@ -5,3 +5,22 @@
 [x-cloak] {
     display: none;
 }
+
+@layer base{
+    .caja{
+        @apply max-w-7xl mx-auto px-2;
+    }
+
+    @media (min-width:640px) {
+        .caja{
+            @apply px-6;
+        }
+    }
+
+    @media (min-width:1024px) {
+        .caja{
+            @apply px-8;
+        }
+    }
+}
+
