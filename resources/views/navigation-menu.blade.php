@@ -177,6 +177,10 @@
 
                 <div class="mt-3 space-y-1">
                     <!-- Account Management -->
+                    <x-responsive-nav-link href="{{ route('admin.home') }}">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+
                     <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
