@@ -4,13 +4,11 @@
     <h1>Mostrar listado de etiquetas</h1>
 @stop
 @section('content')
-
     @if (session('info'))
         <div class="alert alert-info">
             <strong>{{ session('info') }}</strong>
         </div>
     @endif
-
     <div class="card">
         <div class="card-header">
             <a class="btn btn-secondary" href="{{ route('admin.tags.create') }}">Crear etiqueta</a>
