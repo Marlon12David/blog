@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->text('extract');
-            $table->longText('body');
+            $table->text('extract')->nullable();
+            $table->longText('body')->nullable();
             $table->enum('status', [1,2])->default(1);
             $table->foreignId('user_id')->onDelete('cascade');
             $table->foreignId('category_id')->onDelete('cascade');
