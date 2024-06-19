@@ -89,7 +89,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="extract" class="form-label">Extracto del post</label>
-                    <textarea class="form-control" name="extract" id="extract">{{ old('extract') }}</textarea>
+                    <textarea class="form-control" name="extract" id="extract">{!! old('extract') !!}</textarea>
                     
                     @error('extract')
                         <span class="text-danger" >{{ $message }}</span>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="body" class="form-label">Cuerpo del post</label>
-                    <textarea class="form-control" name="body" id="body">{{ old('body') }}</textarea>
+                    <textarea class="form-control" name="body" id="body">{!! old('body') !!}</textarea>
                     
                     @error('body')
                         <span class="text-danger" >{{ $message }}</span>

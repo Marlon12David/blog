@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -35,7 +35,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(PostRequest $request)
     {
         $datos = $request->all();
         $datos['user_id'] = auth()->user()->id;
@@ -73,15 +73,47 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.posts.edit', ['post' => $post]);
+        $categories = Category::all();
+        $tags = Tag::all();
+        $postTags = $post->tags->pluck('id')->toArray();
+
+        return view('admin.posts.edit', ['post' => $post, 'categories' => $categories, 'tags' => $tags, 'postTags' => $postTags]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+        $datos = $request->all();
+        $datos['user_id'] = auth()->user()->id;
+
+        $post->update($datos);
+
+        if ($request->file('file')){
+            $url = Storage::put('posts', $request->file('file'));
+        
+            if ($post->image) {
+                Storage::delete($post->image->url);
+
+                $post->image->update([
+                    'url' => $url
+                ]);
+            }else{
+                $post->image()->create([
+                    'url' => $url
+                ]);
+            }
+        }
+       
+        if ($request->tags){
+            foreach ($request->tags as $tag) {
+                $post->tags()->sync([$tag]);
+                
+            }
+        };
+
+       return redirect()->route('admin.posts.index')->with('info', 'Post creado exitosamente');
     }
 
     /**
@@ -89,6 +121,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        $post->tags()->detach();
+
+        return redirect()->route('admin.posts.index')->with('info', 'Post eliminado exitosamente');
     }
 }
